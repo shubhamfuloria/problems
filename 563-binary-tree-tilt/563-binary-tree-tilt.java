@@ -14,33 +14,24 @@
  * }
  */
 class Solution {
-    static int t_tilt = 0;
-
-    public static int sum(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-
-        return root.val + sum(root.left) + sum(root.right);
+    static int t_tilt;
+      public static int calculatesTiltReturnsHeight(TreeNode root) {
+    if (root == null) {
+      return 0;
     }
 
-    public void helper(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+    int l_sum = calculatesTiltReturnsHeight(root.left);
+    int r_sum = calculatesTiltReturnsHeight(root.right);
 
-        // tilt: sum of all left subtree nodes - sum of all right subtree nodes
+    t_tilt += Math.abs(l_sum - r_sum);
 
-        helper(root.left);
-        helper(root.right);
+    return l_sum + r_sum + root.val;
 
-        int curr_tilt = Math.abs(sum(root.left) - sum(root.right));
-        t_tilt += curr_tilt;
-    }
-
+  }
     public int findTilt(TreeNode root) {
         t_tilt = 0;
-        helper(root);
+        
+        calculatesTiltReturnsHeight(root);
         return t_tilt;
     }
 }
