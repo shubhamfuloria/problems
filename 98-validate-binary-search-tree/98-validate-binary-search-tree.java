@@ -15,39 +15,33 @@
  */
 class Solution {
 
-    private static long maxInBtree(TreeNode root) {
-        if (root == null) {
-            return Long.MIN_VALUE;
-        }
-
-        long l_max = maxInBtree(root.left);
-        long r_max = maxInBtree(root.right);
-
-        return Math.max(root.val, Math.max(l_max, r_max));
+    static class PairBST {
+        boolean isBST;
+        long min;
+        long max;
     }
 
-    private static long minInBtree(TreeNode root) {
+    private static PairBST helper(TreeNode root) {
         if (root == null) {
-            return Long.MAX_VALUE;
+            PairBST mp = new PairBST();
+            mp.isBST = true;
+            mp.min = Long.MAX_VALUE;
+            mp.max = Long.MIN_VALUE;
+            return mp;
         }
 
-        long l_min = minInBtree(root.left);
-        long r_min = minInBtree(root.right);
+        PairBST lp = helper(root.left);
+        PairBST rp = helper(root.right);
 
-        return Math.min(root.val, Math.min(l_min, r_min));
+        PairBST mp = new PairBST();
+        mp.min = Math.min(root.val, Math.min(lp.min, rp.min));
+        mp.max = Math.max(root.val, Math.max(lp.max, rp.max));
+        mp.isBST = lp.isBST && rp.isBST && (lp.max < root.val) && (root.val < rp.min);
+
+        return mp;
     }
 
     public boolean isValidBST(TreeNode root) {
-        if (root == null) {
-            return true;
-        }
-
-        boolean isLeftSubtreeBST = isValidBST(root.left);
-        boolean isRightSubtreeBST = isValidBST(root.right);
-
-        long maxInLSubtree = maxInBtree(root.left);
-        long minInRSubtree = minInBtree(root.right);
-
-        return isLeftSubtreeBST && isRightSubtreeBST && (maxInLSubtree < root.val) && (root.val < minInRSubtree);
+        return helper(root).isBST;
     }
 }
