@@ -14,32 +14,40 @@
  * }
  */
 class Solution {
-    
-    private void inorder(TreeNode root, List<Integer>list) {
-        if(root == null) {
-            return;
+
+    private static long maxInBtree(TreeNode root) {
+        if (root == null) {
+            return Long.MIN_VALUE;
         }
-        
-        inorder(root.left,list);
-        list.add(root.val);
-        inorder(root.right, list);
-        
+
+        long l_max = maxInBtree(root.left);
+        long r_max = maxInBtree(root.right);
+
+        return Math.max(root.val, Math.max(l_max, r_max));
     }
-    public boolean isValidBST(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
-        
-        inorder(root, list);
-        
-        for(int i = 1; i < list.size(); i++) {
-            int prev = list.get(i - 1);
-            int curr = list.get(i);
-            
-            if(curr <= prev) {
-                return false;
-            }
+
+    private static long minInBtree(TreeNode root) {
+        if (root == null) {
+            return Long.MAX_VALUE;
         }
-                
-        return true;
-        
+
+        long l_min = minInBtree(root.left);
+        long r_min = minInBtree(root.right);
+
+        return Math.min(root.val, Math.min(l_min, r_min));
+    }
+
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        boolean isLeftSubtreeBST = isValidBST(root.left);
+        boolean isRightSubtreeBST = isValidBST(root.right);
+
+        long maxInLSubtree = maxInBtree(root.left);
+        long minInRSubtree = minInBtree(root.right);
+
+        return isLeftSubtreeBST && isRightSubtreeBST && (maxInLSubtree < root.val) && (root.val < minInRSubtree);
     }
 }
