@@ -14,26 +14,33 @@
  * }
  */
 class Solution {
-    
-    static boolean balanced;
-    
-    private int calculaltesBalancedReturnsHeight(TreeNode root) {
-        if(root == null || balanced == false) {
-            return 0;
-        }
-        
-        int l_height = calculaltesBalancedReturnsHeight(root.left);
-        int r_height = calculaltesBalancedReturnsHeight(root.right);
-        
-        if(Math.abs(l_height - r_height) >= 2) {
-            balanced = false;
-        }
-        
-        return Math.max(l_height, r_height) + 1;
+
+    static class BalPair {
+        boolean isBalanced;
+        int height;
     }
+
+    private static BalPair isBalancedHelper(TreeNode root) {
+        if (root == null) {
+            BalPair mp = new BalPair();
+            mp.isBalanced = true;
+            mp.height = 0;
+            return mp;
+        }
+
+        BalPair lp = isBalancedHelper(root.left);
+        BalPair rp = isBalancedHelper(root.right);
+
+        BalPair mp = new BalPair();
+        mp.isBalanced = lp.isBalanced && rp.isBalanced && (Math.abs(lp.height - rp.height) < 2);
+        mp.height = Math.max(lp.height, rp.height) + 1;
+
+        return mp;
+    }
+
     public boolean isBalanced(TreeNode root) {
-        balanced = true;
-        calculaltesBalancedReturnsHeight(root);
-        return balanced;
+        
+        BalPair res = isBalancedHelper(root);
+        return res.isBalanced;
     }
 }
