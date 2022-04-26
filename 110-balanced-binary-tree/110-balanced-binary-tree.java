@@ -18,7 +18,7 @@ class Solution {
     static boolean balanced;
     
     private int calculaltesBalancedReturnsHeight(TreeNode root) {
-        if(root == null) {
+        if(root == null || balanced == false) {
             return 0;
         }
         
