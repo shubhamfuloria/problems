@@ -34,26 +34,30 @@ class GFG
 
 class Solution{
 
- 
-    static boolean isSubsetSumMem(int[] A, int n, int sum, Boolean[][] store) {
-        
-        if (sum == 0) {
-          return true;
-        } else if (n == 0 || sum < 0) {
-          return false;
-        } else if (store[n][sum] != null) {
-          return store[n][sum];
-        }
-        
-        // including n - 1th element
-        boolean op1 = isSubsetSumMem(A, n - 1, sum - A[n - 1], store);
-        // excluding n - 1th element
-        boolean op2 = isSubsetSumMem(A, n - 1, sum, store);
-        
-        return store[n][sum] = op1 || op2;
-    }
-    static Boolean isSubsetSum(int N, int arr[], int sum){
+
+    static Boolean isSubsetSum(int n, int A[], int sum){
         // code here
-        return isSubsetSumMem(arr, N, sum, new Boolean[N + 1][sum + 1]);
+        boolean[][] dp = new boolean[n + 1][sum + 1];
+    
+        for (int i = 0; i < n + 1; i++) {
+          for (int j = 0; j < sum + 1; j++) {
+    
+            if (i == 0 && j == 0) {
+              dp[i][j] = true;
+            } else if (i == 0) {
+              dp[i][j] = false;
+            } else if (j == 0) {
+              dp[i][j] = true;
+            } else {
+              if (A[i - 1] <= j) {
+                dp[i][j] = dp[i - 1][j] || dp[i - 1][j - A[i - 1]];
+              } else {
+                dp[i][j] = dp[i - 1][j];
+              }
+            }
+          }
+        }
+    
+        return dp[n][sum];
     }
 }
