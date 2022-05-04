@@ -15,7 +15,8 @@ class Solution {
                 } else {
                     if (coins[i - 1] <= j) {
                         int exclude = dp[i - 1][j];
-                        int include = Math.max(dp[i - 1][j - coins[i - 1]], dp[i][j - coins[i - 1]]);
+                        // int include = Math.max(dp[i - 1][j - coins[i - 1]], dp[i][j - coins[i - 1]]);
+                        int include = dp[i][j - coins[i - 1]];
                         dp[i][j] = include + exclude;
                     } else {
                         dp[i][j] = dp[i - 1][j];
