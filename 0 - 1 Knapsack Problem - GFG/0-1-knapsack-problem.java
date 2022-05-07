@@ -47,33 +47,24 @@ class gfg
 
 class Solution 
 { 
-    
-    static int solve(int W, int[] wt, int[] val, int n, int[][] store) {
-        
-        if(n == 0 || W == 0) {
-            return 0;
-        } else if(store[n][W] != 0) {
-            return store[n][W];
-        }
-        
-        // def: will return max value of products we can get from these items in W
-        // weight
-    
-        if (wt[n - 1] <= W) {
-          // we can include n - 1th item
-          int op1 = val[n - 1] + solve(W - wt[n - 1], wt, val, n - 1, store);
-          int op2 = solve(W, wt, val, n - 1, store);
-          return store[n][W] = Math.max(op1, op2);
-        } else {
-          // we can not include n - 1th item
-          return store[n][W] = solve(W, wt, val, n - 1, store);
-        }
-    }
-    
     //Function to return max value that can be put in knapsack of capacity W.
     static int knapSack(int W, int wt[], int val[], int n) { 
-
-        return solve(W, wt, val, n, new int[n + 1][W + 1]); 
-    }
+         
+        int[][] dp = new int[n + 1][W + 1];
+    
+        for (int i = 1; i < n + 1; i++) {
+          for (int j = 1; j < W + 1; j++) {
+    
+            if (wt[i - 1] <= j) {
+              dp[i][j] = Math.max(dp[i - 1][j], val[i - 1] + dp[i - 1][j - wt[i - 1]]);
+            } else {
+              dp[i][j] = dp[i - 1][j];
+            }
+          }
+        }
+    
+        return dp[n][W];
+    } 
 }
+
 
