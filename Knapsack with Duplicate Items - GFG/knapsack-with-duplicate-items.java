@@ -31,32 +31,19 @@ class GFG{
 
 //User function Template for Java
 
-class Solution {
-    
-    static int knapSackMem(int N, int W, int[] val, int[] wt, int[][] store) {
-    
-        if(N == 0 || W == 0) {
-            return 0;
-        } else if(store[N][W] != 0) {
-            return store[N][W];
-        }
-        
-        if(wt[N - 1] <= W) {
-            
-            int op1 = val[N - 1] + knapSackMem(N, W - wt[N - 1], val, wt, store);
-            int op2 = knapSackMem(N - 1, W, val, wt, store);
-            
-            return store[N][W] = Math.max(op1, op2);
-            
-        } else {
-            
-            return store[N][W] = knapSackMem(N - 1, W, val, wt, store);
-        }
-    }
-    
+class Solution{
     static int knapSack(int N, int W, int val[], int wt[]) {
-        
-        return knapSackMem(N, W, val, wt, new int[N + 1][W + 1]);
-        
+    
+        int[] dp = new int[W + 1];
+    
+        // def: ith cell of dp will contain max profit we can get from all products, if
+        // wt of knapsack is i
+    
+        for (int i = 0; i < wt.length; i++) {
+          for (int j = wt[i]; j < W + 1; j++) {
+            dp[j] = Math.max(dp[j], val[i] + dp[j - wt[i]]);
+          }
+        }
+        return dp[W];
     }
 }
