@@ -2,19 +2,23 @@ class Solution {
     public int reachNumber(int target) {
         
         target = Math.abs(target);
-        int step = 0;
-        int sum = 0;
         
-        while(sum < target) {
-            step++;
-            sum += step;
+        int step = 0;
+        int pos = 0;
+        
+        while(pos < target) {
+            pos += ++step;
         }
         
-        while((sum - target) % 2 != 0) {
-            step++;
-            sum += step;
+        if(pos == target || (pos - target) % 2 == 0) {
+            return step;
+        } 
+        
+        while((pos - target) % 2 != 0) {
+            pos += ++step;
         }
         
         return step;
+        
     }
 }
