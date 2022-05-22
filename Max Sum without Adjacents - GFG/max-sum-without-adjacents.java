@@ -30,27 +30,18 @@ public class Main {
 //User function Template for Java
 
 class Solution {
+    int findMaxSum(int A[], int n) {
+        int inc = A[0];
+        int exc = 0;
     
-    int dfs(int [] A, int pos, int[] store) {
-        if (pos == A.length) {
-          return 0;
-        } else if (pos == A.length - 1) {
-          return A[pos];
-        } else if (pos == A.length - 2) {
-          return Math.max(A[pos], A[pos + 1]);
-        } else if(store[pos] != 0) {
-            return store[pos];
+        for (int i = 1; i < A.length; i++) {
+          int ninc = A[i] + exc;
+          int nexc = Math.max(inc, exc);
+    
+          inc = ninc;
+          exc = nexc;
         }
     
-        // including current element
-        int op1 = A[pos] + dfs(A, pos + 2, store);
-    
-        // not including current element
-        int op2 = dfs(A, pos + 1, store);
-    
-        return store[pos] = Math.max(op1, op2);
-    }
-    int findMaxSum(int[] A, int n) {
-        return dfs(A, 0, new int[n + 1]);    
+        return Math.max(inc, exc);
     }
 }
