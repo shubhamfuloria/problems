@@ -125,16 +125,35 @@ class Solution
 {
 	int minDepth(Node root) {
 	    
-	    if(root == null) {
-	        return Integer.MAX_VALUE -1;
-	    } else if(root.left == null && root.right == null) {
-	        return 1;
-	    }
-	    
-	    int left_min_depth = minDepth(root.left);
-	    int right_min_depth = minDepth(root.right);
-	    
-	    return Math.min(left_min_depth, right_min_depth) + 1;
+        Queue<Node> q = new LinkedList<>();
+    
+        q.offer(root);
+        int min_depth = 0;
+        while (q.isEmpty() == false) {
+    
+          int size = q.size();
+    
+          for (int i = 0; i < size; i++) {
+            Node rem = q.poll();
+    
+            if (rem.left == null && rem.right == null) {
+              return min_depth + 1;
+            }
+    
+            if (rem.left != null) {
+              q.offer(rem.left);
+            }
+    
+            if (rem.right != null) {
+              q.offer(rem.right);
+            }
+          }
+    
+          min_depth++;
+    
+        }
+    
+        return min_depth;
 	}
 }
 
