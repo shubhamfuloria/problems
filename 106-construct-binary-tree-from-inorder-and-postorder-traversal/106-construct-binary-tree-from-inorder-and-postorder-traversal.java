@@ -39,13 +39,12 @@ class Solution {
         int rightSubTreeSize = inEnd - rootIndex;
 
         root.left = buildTree(post, postStart, postStart + leftSubtreeSize - 1, in, inStart, rootIndex - 1);
-        root.right = buildTree(post, postStart + leftSubtreeSize, postEnd - 1, in, rootIndex + 1, inEnd);
+        root.right = buildTree(post, postEnd - rightSubTreeSize, postEnd - 1, in, rootIndex + 1, inEnd);
 
         return root;
     }
 
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        
         return buildTree(postorder, 0, postorder.length - 1, inorder, 0, inorder.length - 1);
     }
 }
