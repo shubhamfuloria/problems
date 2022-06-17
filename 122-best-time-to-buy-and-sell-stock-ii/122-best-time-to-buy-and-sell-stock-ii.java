@@ -8,7 +8,7 @@ class Solution {
 
         for (int i = 1; i < stocks.length; i++) {
             if (stocks[i - 1] <= stocks[i]) {
-                selling_date++;
+                selling_date = i;
             } else {
                 profit += stocks[selling_date] - stocks[buying_date];
                 selling_date = buying_date = i;
