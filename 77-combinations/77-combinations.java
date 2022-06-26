@@ -8,19 +8,24 @@ class Solution {
         // A: [1, 2, 3, 4]
 
         List<List<Integer>> res = new ArrayList<>();
-        backtrack(A, k, 0, new ArrayList<>(), res);
+        generateCombinations(A, k, 0, new ArrayList<>(), res);
         return res;
     }
 
-    public static void backtrack(int[] A, int k, int start, List<Integer> curr, List<List<Integer>> res) {
-        if (curr.size() == k) {
-            res.add(new ArrayList<>(curr)); // res: [{}]
+    public static void generateCombinations(int[] A, int k, int index, List<Integer> curr, List<List<Integer>> res) {
+        if (index == A.length) {
+            if (curr.size() == k) {
+                res.add(new ArrayList<>(curr));
+            }
+            return;
         }
-        for (int i = start; i < A.length; i++) {
-            curr.add(A[i]); // [1];
-            backtrack(A, k, i + 1, curr, res); // generate all subsets that follows [1]
-            // backtrack
-            curr.remove(curr.size() - 1); // []
-        }
+
+        // excluding current element
+        generateCombinations(A, k, index + 1, curr, res);
+
+        // including current element
+        curr.add(A[index]);
+        generateCombinations(A, k, index + 1, curr, res);
+        curr.remove(curr.size() - 1);
     }
 }
