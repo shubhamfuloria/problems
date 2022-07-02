@@ -1,47 +1,37 @@
-class Solution {
-
+public class Solution {
+    static boolean[][] visited;
     public boolean exist(char[][] board, String word) {
-        // if(board[])
-        char fc = word.charAt(0);
-        boolean[][] visited = new boolean[board.length][board[0].length];
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == fc) {
-                    boolean res = solve(board, i, j, "", 0, word, visited);
-                    if (res) {
-                        return true;
-                    }
+        visited = new boolean[board.length][board[0].length];
+        
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[i].length; j++){
+                if((word.charAt(0) == board[i][j]) && search(board, word, i, j, 0)){
+                    return true;
                 }
             }
         }
+        
         return false;
     }
-
-    public static boolean solve(char[][] board, int row, int col, String curr, int index, String target, boolean[][] visited) {
-
-        if(index == target.length()) {
+    
+    private boolean search(char[][]board, String word, int i, int j, int index){
+        if(index == word.length()){
             return true;
         }
-         else if (row < 0 || col < 0 || row == board.length || col == board[0].length || visited[row][col] == true || board[row][col] != target.charAt(index)) {
+        
+        if(i >= board.length || i < 0 || j >= board[i].length || j < 0 || board[i][j] != word.charAt(index) || visited[i][j]){
             return false;
         }
-
-        visited[row][col] = true;
-
-        // move to top
-        boolean op1 = solve(board, row - 1, col, curr + board[row][col], index + 1, target, visited);
-
-        // move to right
-        boolean op2 = solve(board, row, col + 1, curr + board[row][col], index + 1, target, visited);
-
-        // move to bottom
-        boolean op3 = solve(board, row + 1, col, curr + board[row][col], index + 1, target, visited);
-
-        // move to left
-        boolean op4 = solve(board, row, col - 1, curr + board[row][col], index  + 1, target, visited);
-
-        visited[row][col] = false;
-
-        return op1 || op2 || op3 || op4;
+        
+        visited[i][j] = true;
+        if(search(board, word, i-1, j, index+1) || 
+           search(board, word, i+1, j, index+1) ||
+           search(board, word, i, j-1, index+1) || 
+           search(board, word, i, j+1, index+1)){
+            return true;
+        }
+        
+        visited[i][j] = false;
+        return false;
     }
 }
