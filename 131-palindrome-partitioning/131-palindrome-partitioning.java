@@ -1,28 +1,35 @@
 class Solution {
+
     public List<List<String>> partition(String s) {
         List<List<String>> res = new ArrayList<>();
-        backtrack(s, 0, new ArrayList<>(), res);
+        
+        solve(s, new ArrayList<>(), res);
         return res;
     }
-    
-    public void backtrack(String s, int start, List<String> curr, List<List<String>> res) {
+
+    public void solve(String s, List<String> curr, List<List<String>> res) {
         
-        if(start == s.length()) {
+        
+        if(s.length() == 0) {
             res.add(new ArrayList<>(curr));
         }
         
-        for(int i = start; i < s.length(); i++) {
-            if(isPallindrom(s, start, i)) {
-                curr.add(s.substring(start, i + 1));
-                backtrack(s, i + 1, curr, res);
+        //aab
+        for (int i = 0; i < s.length(); i++) {
+            String prefix = s.substring(0, i + 1); //a
+            String suffix = s.substring(i + 1); //ab
+            
+            if(isPallindrom(prefix, 0, prefix.length() - 1)) {
+                curr.add(prefix);
+                solve(suffix, curr, res);
                 curr.remove(curr.size() - 1);
             }
         }
     }
-    
-    private boolean isPallindrom(String s, int start, int end) {
-        while(start < end) {
-            if(s.charAt(start++) != s.charAt(end--)) {
+
+    private static boolean isPallindrom(String s, int start, int end) {
+        while (start < end) {
+            if (s.charAt(start++) != s.charAt(end--)) {
                 return false;
             }
         }
