@@ -10,9 +10,7 @@ class Solution {
         grid[row][col] = -1; // mark visited
 
         int[][] dirs = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
-            
         boolean isClosed = true;
-        
         for (int[] dir : dirs) {
             isClosed = isClosedIsland(grid, row + dir[0], col + dir[1]) && isClosed;
         }
@@ -21,10 +19,10 @@ class Solution {
 
     public int closedIsland(int[][] grid) {
         int count = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == 0 && isClosedIsland(grid, i, j)) {
-                    count++;
+        for (int i = 1; i < grid.length - 1; i++) {
+            for (int j = 1; j < grid[0].length - 1; j++) {
+                if (grid[i][j] == 0) {
+                    count += isClosedIsland(grid, i, j) ? 1 : 0;
                 }
             }
         }
